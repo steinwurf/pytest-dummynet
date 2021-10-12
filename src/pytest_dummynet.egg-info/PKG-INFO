@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: pytest-dummynet
+Version: 1.0.0
+Summary: A py.test plugin providing access to a dummynet.
+Home-page: https://github.com/steinwurf/pytest-dummynet
+Author: Steinwurf ApS
+Author-email: contact@steinwurf.com
+License: BSD 3-clause "New" or "Revised" License
+Keywords: pytest py.test testing unit tests plugin dummynet
+Platform: UNKNOWN
+Classifier: Framework :: Pytest
+Classifier: Development Status :: 2 - Alpha
+Classifier: Environment :: Plugins
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: Linux
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Testing
+Description-Content-Type: text/x-rst
+License-File: LICENSE.rst
+
+============
+Pytest-NetNS
+============
+
+

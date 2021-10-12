@@ -1,0 +1,3 @@
+[pytest11]
+dummynet = pytest_dummynet.fixtures
+

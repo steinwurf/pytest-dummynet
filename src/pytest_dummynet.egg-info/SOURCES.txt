@@ -1,0 +1,15 @@
+LICENSE.rst
+README.rst
+setup.py
+src/pytest_dummynet/__init__.py
+src/pytest_dummynet/dummy_net.py
+src/pytest_dummynet/fixtures.py
+src/pytest_dummynet/namespace_shell.py
+src/pytest_dummynet/shell.py
+src/pytest_dummynet.egg-info/PKG-INFO
+src/pytest_dummynet.egg-info/SOURCES.txt
+src/pytest_dummynet.egg-info/dependency_links.txt
+src/pytest_dummynet.egg-info/entry_points.txt
+src/pytest_dummynet.egg-info/requires.txt
+src/pytest_dummynet.egg-info/top_level.txt
+test/test_dummynet.py
