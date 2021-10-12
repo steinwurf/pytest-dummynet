@@ -4,17 +4,17 @@ Introduction
 
 |PyPi| |Waf Python Tests| |Black| |Flake8|
 
-.. |PyPi| image:: https://badge.fury.io/py/pytest-vagrant.svg
-    :target: https://badge.fury.io/py/pytest-vagrant
+.. |PyPi| image:: https://badge.fury.io/py/pytest-dummynet.svg
+    :target: https://badge.fury.io/py/pytest-dummynet
 
-.. |Waf Python Tests| image:: https://github.com/steinwurf/pytest-vagrant/actions/workflows/python-waf.yml/badge.svg
-   :target: https://github.com/steinwurf/pytest-vagrant/actions/workflows/python-waf.yml
+.. |Waf Python Tests| image:: https://github.com/steinwurf/pytest-dummynet/actions/workflows/python-waf.yml/badge.svg
+   :target: https://github.com/steinwurf/pytest-dummynet/actions/workflows/python-waf.yml
 
-.. |Flake8| image:: https://github.com/steinwurf/pytest-vagrant/actions/workflows/flake.yml/badge.svg
-    :target: https://github.com/steinwurf/pytest-vagrant/actions/workflows/flake.yml
+.. |Flake8| image:: https://github.com/steinwurf/pytest-dummynet/actions/workflows/flake.yml/badge.svg
+    :target: https://github.com/steinwurf/pytest-dummynet/actions/workflows/flake.yml
 
-.. |Black| image:: https://github.com/steinwurf/pytest-vagrant/actions/workflows/black.yml/badge.svg
-      :target: https://github.com/steinwurf/pytest-vagrant/actions/workflows/black.yml
+.. |Black| image:: https://github.com/steinwurf/pytest-dummynet/actions/workflows/black.yml/badge.svg
+      :target: https://github.com/steinwurf/pytest-dummynet/actions/workflows/black.yml
 
 
 pytest-dummynet provides a py.test fixture for working with dummy-networks
