@@ -5,4 +5,3 @@ coverage
 .waf*
 .lock*
 .pytest_cache
-pytest_dummynet.egg-info
