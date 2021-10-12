@@ -1,4 +1,5 @@
 import re
+from subprocess import CalledProcessError
 from . import namespace_shell
 
 
@@ -79,16 +80,6 @@ class DummyNet(object):
         if limit:
             cmd += f" limit {limit}"
         self.shell.run(cmd=cmd, cwd=cwd)
-
-    def tc_loss(self, interface, loss, cwd=None):
-        output = self.tc_show(interface=interface, cwd=cwd)
-        if "netem" in output:
-            action = "change"
-        else:
-            action = "add"
-        self.shell.run(
-            cmd=f"tc qdisc {action} dev {interface} root netem loss {loss}%", cwd=cwd
-        )
 
     def forward(self, from_interface, to_interface):
         self.shell.run(

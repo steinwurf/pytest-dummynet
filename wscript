@@ -88,13 +88,12 @@ def _pytest(bld, venv):
 
     venv.run("python -m pip install -r test/requirements.txt")
 
-    # Install the pytest-vagrant plugin in the virtualenv
+    # Install the pytest-dummynet plugin in the virtualenv
     wheel = _find_wheel(ctx=bld)
 
     venv.run(f"python -m pip install {wheel}")
 
-    # Added our systems path to the virtualenv (otherwise we cannot
-    # find vagrant)
+    # Added our systems path to the virtualenv
     venv.env["PATH"] = os.path.pathsep.join([venv.env["PATH"], os.environ["PATH"]])
 
     # We override the pytest temp folder with the basetemp option,
@@ -119,4 +118,4 @@ def _pytest(bld, venv):
     venv.run(f"python -B -m pytest {test_filter} --basetemp {basetemp}")
 
     # Check the package
-    venv.run(f"twine check {wheel}")
+    # venv.run(f"twine check {wheel}")
