@@ -8,6 +8,12 @@ Latest
 
 * tbd
 
+1.0.1
+-----
+
+* Patch: Fixed the use of 'tc' and 'iptables' on Debian
+
 1.0.0
 -----
+
 * Major: Initial release
