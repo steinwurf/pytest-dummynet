@@ -20,7 +20,14 @@ class Shell(object):
             cmd = "sudo " + cmd
 
         self.log.debug(cmd)
-        return subprocess.check_output(cmd, shell=True, cwd=cwd, text=True)
+        return subprocess.check_output(
+            cmd,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=cwd,
+            text=True,
+        )
 
     async def run_async(self, cmd: str, daemon=False, delay=0, cwd=None):
         """Run an asynchronous command.

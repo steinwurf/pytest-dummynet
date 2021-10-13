@@ -65,12 +65,27 @@ class DummyNet(object):
         return self.shell.run(cmd=f"tc qdisc show dev {interface}", cwd=cwd)
 
     def tc(self, interface, delay=None, loss=None, rate=None, limit=None, cwd=None):
-        output = self.tc_show(interface=interface, cwd=cwd)
+        extra_command = ""
+        try:
+            output = self.tc_show(interface=interface, cwd=cwd)
+        except CalledProcessError as e:
+            if e.stderr == 'exec of "tc" failed: No such file or directory\n':
+                try:
+                    extra_command += "usr/sbin/"
+                    output = self.shell.run(
+                        cmd=extra_command + f"tc qdisc show dev {interface}", cwd=cwd
+                    )
+
+                except CalledProcessError:
+                    raise
+            else:
+                raise
+
         if "netem" in output:
             action = "change"
         else:
             action = "add"
-        cmd = f"tc qdisc {action} dev {interface} root netem"
+        cmd = extra_command + f"tc qdisc {action} dev {interface} root netem"
         if delay:
             cmd += f" delay {delay}ms "
         if loss:
@@ -79,6 +94,7 @@ class DummyNet(object):
             cmd += f" rate {rate}Mbit"
         if limit:
             cmd += f" limit {limit}"
+
         self.shell.run(cmd=cmd, cwd=cwd)
 
     def forward(self, from_interface, to_interface):
