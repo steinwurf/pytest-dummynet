@@ -23,7 +23,6 @@ class Shell(object):
         return subprocess.check_output(
             cmd,
             shell=True,
-            stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             cwd=cwd,
             text=True,
