@@ -121,10 +121,20 @@ class DummyNet(object):
         )
 
     def nat(self, ip, interface):
-        self.shell.run(
-            f"iptables -t nat -A POSTROUTING -s {ip} -o {interface} -j MASQUERADE",
-            cwd=None,
-        )
+        extra_command = ""
+        cmd = f"iptables -t nat -A POSTROUTING -s {ip} -o {interface} -j MASQUERADE"
+        try:
+            self.shell.run(cmd=cmd, cwd=None)
+        except CalledProcessError as e:
+            if e.stderr == 'exec of "iptables" failed: No such file or directory\n':
+                try:
+                    extra_command += "/usr/sbin/"
+                    self.shell.run(cmd=extra_command + cmd, cwd=None)
+
+                except CalledProcessError:
+                    raise
+            else:
+                raise
 
     def netns_list(self):
         output = self.shell.run(cmd="ip netns list", cwd=None)
