@@ -62,13 +62,21 @@ class DummyNet(object):
         await self.shell.run_async(cmd=cmd, daemon=daemon, delay=delay, cwd=cwd)
 
     def tc_show(self, interface, cwd=None):
-        return self.shell.run(cmd=f"tc qdisc show dev {interface}", cwd=cwd)
+        extra_command = ""
+        try:
+            output = self.shell.run(cmd=f"tc qdisc show dev {interface}", cwd=cwd)
+        except CalledProcessError as e:
+            print(e.stderr)
+            return
+
+        return output
 
     def tc(self, interface, delay=None, loss=None, rate=None, limit=None, cwd=None):
         extra_command = ""
         try:
             output = self.tc_show(interface=interface, cwd=cwd)
         except CalledProcessError as e:
+
             if e.stderr == 'exec of "tc" failed: No such file or directory\n':
                 try:
                     extra_command += "/usr/sbin/"
