@@ -71,7 +71,7 @@ class DummyNet(object):
         except CalledProcessError as e:
             if e.stderr == 'exec of "tc" failed: No such file or directory\n':
                 try:
-                    extra_command += "usr/sbin/"
+                    extra_command += "/usr/sbin/"
                     output = self.shell.run(
                         cmd=extra_command + f"tc qdisc show dev {interface}", cwd=cwd
                     )
