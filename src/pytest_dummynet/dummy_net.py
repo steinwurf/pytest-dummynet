@@ -8,14 +8,26 @@ class DummyNet(object):
         self.shell = shell
 
     def link_veth_add(self, p1_name, p2_name):
+        """Adds a virtual ethernet between two endpoints.
+
+        Name of the link will be 'p1_name@p2_name' when you look at 'ip addr'
+        in the terminal"""
+
         self.shell.run(
             cmd=f"ip link add {p1_name} type veth peer name {p2_name}", cwd=None
         )
 
     def link_set(self, namespace, interface):
+        """Binds a network interface (usually the veths) to a namespace.
+
+        The namespace parameter is the name of the namespace as a string"""
+
         self.shell.run(cmd=f"ip link set {interface} netns {namespace}", cwd=None)
 
     def link_list(self):
+        """Returns the output of the 'ip link list' command parsed to a
+        list of strings"""
+
         output = self.shell.run(cmd="ip link list", cwd=None)
 
         parser = re.compile(
@@ -44,24 +56,39 @@ class DummyNet(object):
         return names
 
     def link_delete(self, interface):
+        """Deletes a specific network interface."""
+
         self.shell.run(cmd=f"ip link delete {interface}", cwd=None)
 
     def addr_add(self, ip, interface):
+        """Adds an IP-address to a network interface."""
+
         self.shell.run(f"ip addr add {ip} dev {interface}", cwd=None)
 
     def up(self, interface):
+        """Sets the given network interface to 'up'"""
+
         self.shell.run(f"ip link set dev {interface} up", cwd=None)
 
     def route(self, ip):
+        """Sets a new default IP-route."""
+
         self.shell.run(f"ip route add default via {ip}", cwd=None)
 
     def run(self, cmd, cwd):
+        """Wrapper for the command-line access"""
+
         return self.shell.run(cmd=cmd, cwd=cwd)
 
     async def run_async(self, cmd, daemon=False, delay=0, cwd=None):
+        """Wrapper for the concurrent command-line access"""
+
         await self.shell.run_async(cmd=cmd, daemon=daemon, delay=delay, cwd=cwd)
 
     def tc_show(self, interface, cwd=None):
+        """Shows the current traffic-control configurations in the given
+        interface"""
+
         extra_command = ""
         try:
             output = self.shell.run(cmd=f"tc qdisc show dev {interface}", cwd=cwd)
@@ -81,6 +108,9 @@ class DummyNet(object):
         return output
 
     def tc(self, interface, delay=None, loss=None, rate=None, limit=None, cwd=None):
+        """Modifies the given interface by adding any artificial combination of
+        delay, packet loss, bandwidth constraints or queue limits"""
+
         extra_command = ""
 
         output = self.tc_show(interface=interface, cwd=cwd)
@@ -115,6 +145,7 @@ class DummyNet(object):
                 raise
 
     def forward(self, from_interface, to_interface):
+        """Forwards all traffic from one network interface to another."""
         self.shell.run(
             f"iptables -A FORWARD -o {from_interface} -i {to_interface} -j ACCEPT",
             cwd=None,
@@ -137,6 +168,8 @@ class DummyNet(object):
                 raise
 
     def netns_list(self):
+        """Returns a list of all network namespaces. Runs 'ip netns list'"""
+
         output = self.shell.run(cmd="ip netns list", cwd=None)
         names = []
 
@@ -148,9 +181,19 @@ class DummyNet(object):
         return names
 
     def netns_delete(self, name):
+        """Deletes a specific network namespace."""
+
         self.shell.run(cmd=f"ip netns delete {name}", cwd=None)
 
     def netns_add(self, name):
+        """Adds a new network namespace.
+
+        Returns a new DummyNet object with a NamespaceShell, a wrapper to the
+        command-line but with every command prefixed by 'ip netns exec name'
+        This returned object is the main component for creating a dummy-network.
+        Configuring these namespaces with the other utility commands allows you
+        to configure the networks."""
+
         self.shell.run(cmd=f"ip netns add {name}", cwd=None)
 
         shell = namespace_shell.NamespaceShell(name=name, shell=self.shell)

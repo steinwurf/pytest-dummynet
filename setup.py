@@ -69,7 +69,7 @@ setup(
     keywords=("pytest py.test " "testing unit tests plugin dummynet"),
     packages=find_packages(where="src", exclude=["test"]),
     package_dir={"": "src"},
-    install_requires=["pytest", "paramiko", "python-slugify"],
+    install_requires=["pytest"],
     entry_points={
         "pytest11": ["dummynet = pytest_dummynet.fixtures"],
     },

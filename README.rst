@@ -18,7 +18,20 @@ Introduction
 
 
 pytest-dummynet provides a py.test fixture for working with dummy-networks
-in pytest on Linux machines.
+in pytest on Linux machines. By dummy-networks we refer to setups with network
+namespaces, virtual ethernets, etc.
+
+The DummyNet class is a python wrapper for the linux 'ip netns' and 'ip link'
+tools. The methods of the class parse args directly to the command-line in your
+linux OS.
+
+So far, Ubuntu and Debian are supported, but please make sure, that you
+have the iproute2 linux-package installed with::
+
+    apt-get install iproute2
+
+Other Linux operating systems have not been tested, but feel free to open an
+issue if support is needed.
 
 .. contents:: Table of Contents:
    :local:
@@ -39,10 +52,20 @@ injected into a test function by using the dummynet fixture.
 Example::
 
     def test_run_fail(dummynet):
-        do_something(dummynet)
 
-The ``dummynet`` argument is an instance of DummyNet and represents the
-dummynet environment on the machine running the test code.
+        demo0 = dummynet.netns_add(name="namespace1")
+        demo1 = dummynet.netns_add(name="namespace2")
+
+        dummynet.link_veth_add(p1_name="peer1", p2_name="peer2")
+
+The ``dummynet`` argument is an instance of the DummyNet class.
+
+For a complete example of a local network setup see the test in
+'test/test_dummynet.py'.
+
+You can try playing around with the class methods in dummynet.py and call the
+commands in self.shell.run(cmd) from the command-line. This can give a better
+idea of the functionality.
 
 
 Relase new version
