@@ -7,7 +7,11 @@ on:
   pull_request:
 jobs:
   waf:
-    runs-on: [self-hosted, Linux]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [Windows, Linux]
+    runs-on: [self-hosted, "${{ matrix.os }}"]
     name: ${{ matrix.os }} Waf
     env:
       python: python3
