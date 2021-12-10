@@ -5,15 +5,12 @@ every change, see the Git log.
 
 Latest
 ------
-
-* tbd
+* Minor: Added DockerShell for running commands within docker.
 
 1.0.1
 -----
-
 * Patch: Fixed the use of 'tc' and 'iptables' on Debian
 
 1.0.0
 -----
-
 * Major: Initial release
