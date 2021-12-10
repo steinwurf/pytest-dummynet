@@ -89,15 +89,13 @@ class DummyNet(object):
         """Shows the current traffic-control configurations in the given
         interface"""
 
-        extra_command = ""
         try:
             output = self.shell.run(cmd=f"tc qdisc show dev {interface}", cwd=cwd)
         except CalledProcessError as e:
             if e.stderr == 'exec of "tc" failed: No such file or directory\n':
                 try:
-                    extra_command += "/usr/sbin/"
                     output = self.shell.run(
-                        cmd=extra_command + f"tc qdisc show dev {interface}", cwd=cwd
+                        cmd=f"/usr/sbin/tc qdisc show dev {interface}", cwd=cwd
                     )
 
                 except CalledProcessError:
