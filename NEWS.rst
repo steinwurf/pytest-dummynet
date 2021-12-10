@@ -5,6 +5,10 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+1.1.0
+-----
 * Minor: Added DockerShell for running commands within docker.
 
 1.0.1
