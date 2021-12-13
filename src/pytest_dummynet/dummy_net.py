@@ -196,3 +196,18 @@ class DummyNet(object):
 
         shell = namespace_shell.NamespaceShell(name=name, shell=self.shell)
         return DummyNet(shell=shell)
+
+    def open(self):
+        if hasattr(self.shell, "open"):
+            self.shell.open()
+
+    def close(self):
+        if hasattr(self.shell, "close"):
+            self.shell.close()
+
+    def __enter__(self):
+        self.open()
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.close()

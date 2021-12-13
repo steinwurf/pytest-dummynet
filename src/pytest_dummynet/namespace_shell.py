@@ -3,7 +3,7 @@ class NamespaceShell(object):
         self.name = name
         self.shell = shell
 
-    def run(self, cmd, cwd):
+    def run(self, cmd, cwd=None):
         """Run a command.
         :param cmd: The command to run
         :param cwd: The current working directory i.e. where the command will

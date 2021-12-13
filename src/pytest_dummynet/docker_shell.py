@@ -2,12 +2,17 @@ import asyncio
 
 
 class DockerShell(object):
-    """A shell object for running commands"""
+    """A shell object for running commands in a docker container"""
 
-    def __init__(self, client, log, image_id):
+    def __init__(self, log, client, image_id):
         self.log = log
-        self.container = client.containers.run(
-            image=image_id,
+        self.client = client
+        self.image_id = image_id
+        self.container = None
+
+    def open(self):
+        self.container = self.client.containers.run(
+            image=self.image_id,
             stdin_open=True,
             tty=True,
             auto_remove=True,
@@ -23,6 +28,9 @@ class DockerShell(object):
         :param cwd: The current working directory i.e. where the command will
             run
         """
+        if self.container is None:
+            self.open()
+
         self.log.debug(cmd)
         exit_code, output = self.container.exec_run(cmd, workdir=cwd, **kwargs)
         if exit_code != 0:
@@ -39,6 +47,8 @@ class DockerShell(object):
         :param cwd: The current working directory i.e. where the command will
             run
         """
+        if self.container is None:
+            self.open()
 
         if delay > 0:
             self.log.debug(f"Waiting {delay} seconds")
@@ -77,6 +87,8 @@ class DockerShell(object):
             if exit_code != 0:
                 raise RuntimeError(f"{cmd} failed with exit code {exit_code}")
 
-    def __del__(self):
+    def stop(self, timeout=1):
         """Stop the container"""
-        self.container.stop(timeout=1)
+        if self.container is not None:
+            self.container.stop(timeout)
+            self.container = None
