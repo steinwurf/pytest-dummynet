@@ -18,8 +18,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Configure
-        run: ${{ env.python }} waf configure
+        run: python3 waf configure
       - name: Build
-        run: ${{ env.python }} waf
+        run: python3 waf
       - name: Test
-        run: ${{ env.python }} waf --run_tests
+        run: python3 waf --run_tests
