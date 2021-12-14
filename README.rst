@@ -53,10 +53,12 @@ Example::
 
     def test_run_fail(dummynet):
 
-        demo0 = dummynet.netns_add(name="namespace1")
-        demo1 = dummynet.netns_add(name="namespace2")
+        with dummynet.host() as shell:
 
-        dummynet.link_veth_add(p1_name="peer1", p2_name="peer2")
+            demo0 = shell.netns_add(name="namespace1")
+            demo1 = shell.netns_add(name="namespace2")
+
+            shell.link_veth_add(p1_name="peer1", p2_name="peer2")
 
 The ``dummynet`` argument is an instance of the DummyNet class.
 
