@@ -8,7 +8,7 @@ on:
 jobs:
   pip:
     name: Pip Install
-    runs-on: [self-hosted, docker]
+    runs-on: [self-hosted, builder, docker]
     container:
       image: python:3.9.5
       options: --user 0:0
