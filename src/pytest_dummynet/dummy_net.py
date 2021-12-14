@@ -121,7 +121,7 @@ class DummyNet(object):
 
         cmd = f"tc qdisc {action} dev {interface} root netem"
         if delay:
-            cmd += f" delay {delay}ms "
+            cmd += f" delay {delay}ms"
         if loss:
             cmd += f" loss {loss}%"
         if rate:

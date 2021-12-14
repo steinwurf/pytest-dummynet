@@ -1,4 +1,4 @@
-name: Waf Python Tests
+name: Pip Install
 on:
   workflow_dispatch:
   schedule:
@@ -6,8 +6,8 @@ on:
   push:
   pull_request:
 jobs:
-  waf:
-    name: Waf
+  pip:
+    name: Pip Install
     runs-on: [self-hosted, Linux, builder, docker]
     container:
       image: python:3.9.5
@@ -15,11 +15,9 @@ jobs:
       volumes:
         - /home/buildbot/.ssh:/root/.ssh
     steps:
-      - name: Checkout
+      - name: Install SSH client
+        run: apt update && apt -y install openssh-client
+      - name: Checkout source code
         uses: actions/checkout@v2
-      - name: Configure
-        run: python3 waf configure
-      - name: Build
-        run: python3 waf
-      - name: Test
-        run: python3 waf --run_tests
+      - name: Install package
+        run: pip install .

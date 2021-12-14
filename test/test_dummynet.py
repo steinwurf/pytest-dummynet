@@ -15,24 +15,55 @@ def test_dummynet_fixture(dummynet):
     pass
 
 
-def test_run(dummynet):
+def test_run(dummynet, mocker):
 
+    mocked_class = mocker.patch("pytest_dummynet.host_shell.HostShell")
+    mocked_shell = mocker.Mock()
+
+    mocked_shell.run.side_effect = [
+        "",
+        "",
+        "",
+        "demo1\ndemo0\n",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+    ]
+
+    mocked_class.return_value = mocked_shell
     with dummynet.host(sudo=False) as shell:
+        mocked_class.assert_called_once_with(log=mocker.ANY, sudo=False)
+
+        # Get a list of the current namespaces
+        namespaces = shell.netns_list()
+        assert namespaces == []
+
+        # create two namespaces
+        demo0 = shell.netns_add(name=namespace1)
+        demo1 = shell.netns_add(name=namespace2)
 
         # Get a list of the current namespaces
         namespaces = shell.netns_list()
 
-        # If these namespaces exist, we will remove them and re-add them.
-        # This allows us to reconfigure safely
-
-        if namespace1 in namespaces:
-            shell.netns_delete(namespace1)
-
-        if namespace2 in namespaces:
-            shell.netns_delete(namespace2)
-
-        demo0 = shell.netns_add(name=namespace1)
-        demo1 = shell.netns_add(name=namespace2)
+        assert namespace1 in namespaces
+        assert namespace2 in namespaces
 
         # Add a link. This will go between the namespaces.
         shell.link_veth_add(p1_name=peer1, p2_name=peer2)
@@ -69,3 +100,72 @@ def test_run(dummynet):
 
         shell.netns_delete(name=namespace1)
         shell.netns_delete(name=namespace2)
+    print(mocked_shell.run.mock_calls)
+    mocked_shell.run.assert_has_calls(
+        [
+            mocker.call(cmd="ip netns list", cwd=None),
+            mocker.call(cmd=f"ip netns add {namespace1}", cwd=None),
+            mocker.call(cmd=f"ip netns add {namespace2}", cwd=None),
+            mocker.call(cmd="ip netns list", cwd=None),
+            mocker.call(
+                cmd=f"ip link add {peer1} type veth peer name {peer2}", cwd=None
+            ),
+            mocker.call(cmd=f"ip link set {peer1} netns {namespace1}", cwd=None),
+            mocker.call(cmd=f"ip link set {peer2} netns {namespace2}", cwd=None),
+            mocker.call(
+                cmd=f"ip netns exec {namespace1} ip addr add {ip1}/{port} dev {peer1}",
+                cwd=None,
+            ),
+            mocker.call(
+                cmd=f"ip netns exec {namespace2} ip addr add {ip2}/{port} dev {peer2}",
+                cwd=None,
+            ),
+            mocker.call(
+                cmd=f"ip netns exec {namespace1} ip link set dev {peer1} up", cwd=None
+            ),
+            mocker.call(
+                cmd=f"ip netns exec {namespace2} ip link set dev {peer2} up", cwd=None
+            ),
+            mocker.call(
+                cmd=f"ip netns exec {namespace1} tc qdisc show dev {peer1}", cwd=None
+            ),
+            mocker.call(
+                cmd=f"ip netns exec {namespace1} tc qdisc add dev {peer1} root netem delay 20ms loss 1% rate 10Mbit limit 100",
+                cwd=None,
+            ),
+            mocker.call(
+                cmd=f"ip netns exec {namespace2} tc qdisc show dev {peer2}", cwd=None
+            ),
+            mocker.call(
+                cmd=f"ip netns exec {namespace2} tc qdisc add dev {peer2} root netem delay 20ms loss 1% rate 10Mbit limit 100",
+                cwd=None,
+            ),
+            mocker.call(
+                cmd=f"ip netns exec {namespace1} tc qdisc show dev {peer1}", cwd=None
+            ),
+            mocker.call(
+                cmd=f"ip netns exec {namespace2} tc qdisc show dev {peer2}", cwd=None
+            ),
+            mocker.call(
+                cmd=f"ip netns exec {namespace1} ip route add default via {ip1}",
+                cwd=None,
+            ),
+            mocker.call(
+                cmd=f"ip netns exec {namespace2} ip route add default via {ip2}",
+                cwd=None,
+            ),
+            mocker.call(
+                cmd=f"ip netns exec {namespace1} iptables -t nat -A POSTROUTING -s {ip1} -o {peer1} -j MASQUERADE",
+                cwd=None,
+            ),
+            mocker.call(
+                cmd=f"ip netns exec {namespace2} iptables -t nat -A POSTROUTING -s {ip2} -o {peer2} -j MASQUERADE",
+                cwd=None,
+            ),
+            mocker.call(
+                cmd=f"ip netns exec {namespace1} ip link delete {peer1}", cwd=None
+            ),
+            mocker.call(cmd=f"ip netns delete {namespace1}", cwd=None),
+            mocker.call(cmd=f"ip netns delete {namespace2}", cwd=None),
+        ]
+    )
