@@ -101,5 +101,6 @@ def test_run(dummynet, mocker, datarecorder):
         shell.netns_delete(name=namespace1)
         shell.netns_delete(name=namespace2)
 
+    # Check that the shell was called with the correct arguments.
     calls = [call.kwargs for call in mocked_shell.run.mock_calls]
     datarecorder.record_data(data=calls, recording_file="test/data/calls.json")
