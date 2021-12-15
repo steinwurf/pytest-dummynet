@@ -16,7 +16,7 @@ charset-normalizer==2.0.9
     # via requests
 colorama==0.4.4
     # via twine
-cryptography==36.0.0
+cryptography==36.0.1
     # via secretstorage
 docker==5.0.3
     # via pytest-dummynet (setup.py)
@@ -55,12 +55,12 @@ pyparsing==3.0.6
 pytest==6.2.5
     # via
     #   -r test/requirements.in
+    #   pytest-datarecorder
     #   pytest-dummynet (setup.py)
     #   pytest-mock
-    #   pytest-testdirectory
-pytest-mock==3.6.1
+pytest-datarecorder==1.3.0
     # via -r test/requirements.in
-pytest-testdirectory==3.1.0
+pytest-mock==3.6.1
     # via -r test/requirements.in
 readme-renderer==32.0
     # via twine
