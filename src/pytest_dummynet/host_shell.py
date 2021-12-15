@@ -2,7 +2,7 @@ import subprocess
 import asyncio
 
 
-class Shell(object):
+class HostShell(object):
     """A shell object for running commands"""
 
     def __init__(self, log, sudo: bool):

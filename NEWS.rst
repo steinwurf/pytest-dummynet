@@ -5,7 +5,8 @@ every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Major: Switch to an open close based interaction, i.e., use with to handle the
+  creation and destruction of dummynet shells.
 
 1.1.0
 -----

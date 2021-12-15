@@ -1,3 +1,4 @@
 pytest
-pytest_testdirectory
+pytest-datarecorder
+pytest-mock
 twine
