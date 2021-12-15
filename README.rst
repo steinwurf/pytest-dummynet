@@ -2,7 +2,7 @@
 Introduction
 ============
 
-|PyPi| |Waf Python Tests| |Black| |Flake8|
+|PyPi| |Waf Python Tests| |Black| |Flake8| |Pip Install|
 
 .. |PyPi| image:: https://badge.fury.io/py/pytest-dummynet.svg
     :target: https://badge.fury.io/py/pytest-dummynet
@@ -15,6 +15,9 @@ Introduction
 
 .. |Black| image:: https://github.com/steinwurf/pytest-dummynet/actions/workflows/black.yml/badge.svg
       :target: https://github.com/steinwurf/pytest-dummynet/actions/workflows/black.yml
+
+.. |Pip Install| image:: https://github.com/steinwurf/pytest-dummynet/actions/workflows/pip.yml/badge.svg
+      :target: https://github.com/steinwurf/pytest-dummynet/actions/workflows/pip.yml
 
 
 pytest-dummynet provides a py.test fixture for working with dummy-networks
