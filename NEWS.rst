@@ -5,7 +5,8 @@ every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Minor: Made `cwd` an optional parameter to run.
+* Minor: Changed log name from "client" to "dummynet".
 
 2.0.0
 -----

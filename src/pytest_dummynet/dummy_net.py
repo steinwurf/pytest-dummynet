@@ -75,7 +75,7 @@ class DummyNet(object):
 
         self.shell.run(f"ip route add default via {ip}", cwd=None)
 
-    def run(self, cmd, cwd):
+    def run(self, cmd, cwd=None):
         """Wrapper for the command-line access"""
 
         return self.shell.run(cmd=cmd, cwd=cwd)
